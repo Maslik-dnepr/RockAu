@@ -1,6 +1,11 @@
+import java.awt.Toolkit;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.http.HttpConnectTimeoutException;
 import java.util.ArrayList;
+import java.util.Scanner;
+
+import javax.swing.JOptionPane;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -9,34 +14,43 @@ import org.jsoup.select.Elements;
 
 public class RockAuto
 {
-	public void getItemsFromPage(String url) throws IOException
-	{
-		Document doc=Jsoup.connect("https://www.rockauto.com/en/catalog")
-			    .get();
-		Element el=doc.getElementById("section-tabs");
-		
-		FileWriter writer = new FileWriter("res.txt", true);
-		writer.write(el.toString());
-		writer.close();
-		//System.out.println(el);
-	}
 
-//========LEVEL ----  1 ==========================================================================	
-	public Elements get0CatElems() throws IOException
+//========LEVELS ----  ALL ==========================================================================	
+	public Elements getCatElems(String url, int level,int delay,int maxtries) throws IOException, InterruptedException
 	{
-		Elements res;
-		Document doc=Jsoup.connect("https://www.rockauto.com/en/catalog")
-			    .get();
-		res=doc.getElementsByClass("nlabel");
-		return res;
-	}
-	
-//========LEVEL ----  OTHER ==========================================================================	
-	public Elements getCatElems(String url, int level) throws IOException
-	{
+		Document doc=null;
 		Elements res=new Elements();
-		Document doc=Jsoup.connect(url)
-			    .get();
+		
+		int count = 0;
+		while (true)
+		{
+			try 
+			{
+				doc=Jsoup.connect(url)
+					.timeout(delay)
+				    .get();
+			break;
+			}catch (Exception e)
+			{
+				Toolkit.getDefaultToolkit().beep();Toolkit.getDefaultToolkit().beep();
+				System.out.println("!!!!!!!!!!!!!!!! ");
+
+				String answer="";
+				do
+				{
+					answer = JOptionPane.showInputDialog("Keyword?");						
+				}
+				while (!answer.equals("go"));
+				System.out.println("...continue");	
+				
+				if (++count == maxtries) 
+				{
+					System.out.println("Fuck!");
+					break;
+				}
+			}
+		}
+			
 		Elements els=doc.getElementsByClass("nlabel");
 		int threshold=(doc.getElementsByClass("ra-btn closeouts-btn").size()>0?els.size()-1:els.size());
 		for (int i = level; i < threshold; i++)
@@ -54,12 +68,41 @@ public class RockAuto
 	}
 	
 //========PRODUCT LINKS ==========================================================================		
-	public ArrayList<Item> getProductList(String url) throws IOException
+	public ArrayList<Item> getProductList(String url, int delay, int maxtries) throws IOException, InterruptedException
 	{
+		Document doc=null;
 		ArrayList<Item> res=new ArrayList<>();
-		//listing-text-row-moreinfo-truck
-		Document doc=Jsoup.connect(url)
-			    .get();
+
+		int count = 0;
+		while (true)
+		{	
+			try
+			{
+				doc=Jsoup.connect(url)
+						.timeout(delay)
+						.get();
+				break;
+			}catch (Exception e)
+			{
+				Toolkit.getDefaultToolkit().beep();Toolkit.getDefaultToolkit().beep();
+				System.out.println("!!!!!!!!!!!!!!!! ");
+				
+				String answer="";
+				do
+				{
+					answer = JOptionPane.showInputDialog("Keyword?");
+				}
+				while (!answer.equals("go"));
+				System.out.println("...continue");	
+
+				if (++count == maxtries) 
+				{
+					System.out.println("Fuck!");
+					break;
+				}	
+			}
+		}
+			
 		//Elements els=doc.getElementsByClass("listing-border-top-line listing-inner-content");
 		Elements els=doc.getElementsByAttributeValueStarting("class", "listing-inner altrow-a-");
 		String manufacturer,pn,adinfo,price,link;
@@ -89,7 +132,8 @@ public class RockAuto
 			}
 			try
 			{
-				price=el.getElementsByClass("ra-formatted-amount listing-price listing-amount-bold").get(0).text();	
+				price=el.getElementsByClass("ra-formatted-amount listing-total").get(0).text();
+
 			} catch (IndexOutOfBoundsException e)
 			{
 				price="";
@@ -116,6 +160,4 @@ public class RockAuto
 		return el.getElementsByTag("td").get(0).text();
 	}
 //
-	
-	
 }

@@ -1,6 +1,7 @@
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
@@ -23,8 +24,10 @@ public class CSV
 	
 	public void writeCSV(ArrayList<Item> ar) throws IOException
 	{	
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(csv_file), "UTF8"));
+//		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+//                new FileOutputStream(csv_file), "UTF8"));
+		FileWriter writer = new FileWriter(csv_file, true);
+		
 		for (Item item : ar)
 		{	
 			writer.write(item.cat0+"~"+item.cat1+"~"+item.cat2+"~"+
@@ -32,7 +35,10 @@ public class CSV
 						item.cat5+"~"+item.manufacturer+"~"+item.pn+"~"+
 						item.adinfo+"~"+item.price+"~"+item.link+"\n");
 		}
-		writer.flush();
+//		writer.flush();
 		writer.close();
+		
+		
+		
 	}
 }
