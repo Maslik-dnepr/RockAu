@@ -32,22 +32,22 @@ public class RockAuto
 			break;
 			}catch (Exception e)
 			{
-				Toolkit.getDefaultToolkit().beep();Toolkit.getDefaultToolkit().beep();
+				//Toolkit.getDefaultToolkit().beep();Toolkit.getDefaultToolkit().beep();
 				System.out.println("!!!!!!!!!!!!!!!! ");
 
-				String answer="";
-				do
-				{
-					answer = JOptionPane.showInputDialog("Keyword?");						
-				}
-				while (!answer.equals("go"));
-				System.out.println("...continue");	
-				
-				if (++count == maxtries) 
-				{
-					System.out.println("Fuck!");
-					break;
-				}
+//				String answer="";
+//				do
+//				{
+//					answer = JOptionPane.showInputDialog("Keyword?");						
+//				}
+//				while (!answer.equals("go"));
+//				System.out.println("...continue");	
+//				
+//				if (++count == maxtries) 
+//				{
+//					System.out.println("Fuck!");
+//					break;
+//				}
 			}
 		}
 			
@@ -84,22 +84,22 @@ public class RockAuto
 				break;
 			}catch (Exception e)
 			{
-				Toolkit.getDefaultToolkit().beep();Toolkit.getDefaultToolkit().beep();
+				//Toolkit.getDefaultToolkit().beep();Toolkit.getDefaultToolkit().beep();
 				System.out.println("!!!!!!!!!!!!!!!! ");
 				
-				String answer="";
-				do
-				{
-					answer = JOptionPane.showInputDialog("Keyword?");
-				}
-				while (!answer.equals("go"));
-				System.out.println("...continue");	
-
-				if (++count == maxtries) 
-				{
-					System.out.println("Fuck!");
-					break;
-				}	
+//				String answer="";
+//				do
+//				{
+//					answer = JOptionPane.showInputDialog("Keyword?");
+//				}
+//				while (!answer.equals("go"));
+//				System.out.println("...continue");	
+//
+//				if (++count == maxtries) 
+//				{
+//					System.out.println("Fuck!");
+//					break;
+//				}	
 			}
 		}
 			
